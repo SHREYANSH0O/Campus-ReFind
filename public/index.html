@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Campus lost-and-found reporting, matching, claims, and verification." />
+    <title>Campus ReFind — Lost & Found, Reconnected</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#dashboard" data-route="dashboard" aria-label="Campus ReFind home">
+          <span class="brand-mark">R</span><span>Campus <b>ReFind</b></span>
+        </a>
+        <nav class="desktop-nav" aria-label="Main navigation">
+          <button class="nav-link active" data-route="dashboard">Dashboard</button>
+          <button class="nav-link" data-route="browse">Browse reports</button>
+          <button class="nav-link" data-route="report">Report an item</button>
+          <button class="nav-link" data-route="claims">My claims</button>
+          <button class="nav-link admin-only" data-route="admin">Admin</button>
+        </nav>
+        <div class="top-actions">
+          <button id="notificationButton" class="icon-button signed-in-only" aria-label="View notifications" title="Notifications">
+            <span aria-hidden="true">♢</span><i id="notificationBadge"></i>
+          </button>
+          <button id="profileButton" class="profile-button signed-in-only"></button>
+          <button id="openAuth" class="button button-small auth-only">Sign in</button>
+          <button id="mobileMenuButton" class="icon-button mobile-menu" aria-label="Open navigation">☰</button>
+        </div>
+      </header>
+
+      <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+        <button class="nav-link" data-route="dashboard">Dashboard</button>
+        <button class="nav-link" data-route="browse">Browse reports</button>
+        <button class="nav-link" data-route="report">Report an item</button>
+        <button class="nav-link" data-route="claims">My claims</button>
+        <button class="nav-link admin-only" data-route="admin">Admin</button>
+      </nav>
+
+      <main id="view" tabindex="-1"></main>
+    </div>
+
+    <dialog id="authDialog" class="modal auth-dialog">
+      <button class="close-dialog" data-close="authDialog" aria-label="Close">×</button>
+      <div class="auth-header">
+        <span class="brand-mark">R</span>
+        <div><p class="overline">Campus ReFind</p><h2>Welcome back.</h2></div>
+      </div>
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab active" data-auth-tab="login">Sign in</button>
+        <button class="auth-tab" data-auth-tab="register">Create account</button>
+      </div>
+      <form id="loginForm" class="auth-form">
+        <label>Email<input name="email" type="email" placeholder="you@campus.edu" autocomplete="email" required /></label>
+        <label>Password<input name="password" type="password" placeholder="Your password" autocomplete="current-password" required /></label>
+        <button class="button button-full" type="submit">Sign in to your account <span>→</span></button>
+        <p class="demo-note">Create an account to get started, then promote your real campus account with the admin script if you need staff access.</p>
+      </form>
+      <form id="registerForm" class="auth-form hidden">
+        <div class="field-row"><label>Full name<input name="name" placeholder="Your name" autocomplete="name" required /></label><label>Department<input name="department" placeholder="e.g. Computer Science" /></label></div>
+        <label>Campus email<input name="email" type="email" placeholder="you@campus.edu" autocomplete="email" required /></label>
+        <label>Password<input name="password" type="password" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" required /></label>
+        <button class="button button-full" type="submit">Create my account <span>→</span></button>
+      </form>
+      <p class="form-feedback" id="authFeedback" role="status"></p>
+    </dialog>
+
+    <dialog id="itemDialog" class="modal item-dialog"></dialog>
+    <dialog id="claimDialog" class="modal claim-dialog"></dialog>
+    <dialog id="notificationsDialog" class="modal notices-dialog"></dialog>
+    <dialog id="profileDialog" class="modal profile-dialog"></dialog>
+    <div id="toastRegion" class="toast-region" aria-live="polite"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
