@@ -593,7 +593,11 @@ const server = createServer(async (request, response) => {
 
 async function boot() {
   await initialiseDatabase();
-  await ensureStorageBucket();
+  try {
+    await ensureStorageBucket();
+  } catch (error) {
+    console.warn(`Storage setup warning: ${error.message || error}`);
+  }
   server.listen(port, host, () => {
     console.log(`Campus ReFind is running at http://${host === "0.0.0.0" ? "localhost" : host}:${port}`);
   });

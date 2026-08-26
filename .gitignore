@@ -1,1 +1,8 @@
-
+node_modules/
+.env
+.env.local
+.env.production
+!.env.example
+data/*.db
+uploads/*
+!uploads/.gitkeep

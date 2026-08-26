@@ -10,10 +10,7 @@ if (!connectionString) {
   throw new Error("DATABASE_URL is required. Use your Supabase session pooler connection string.");
 }
 
-const sslDisabled =
-  /sslmode=disable/i.test(connectionString) ||
-  String(process.env.PGSSLMODE || "").trim().toLowerCase() === "disable";
-
+const sslDisabled = /sslmode=disable/i.test(connectionString) || String(process.env.PGSSLMODE || "").trim().toLowerCase() === "disable";
 export const pool = new Pool({
   connectionString,
   ssl: sslDisabled ? false : { rejectUnauthorized: false },
