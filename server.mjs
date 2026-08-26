@@ -4,6 +4,7 @@ import { extname, join, normalize } from "node:path";
 import { randomBytes } from "node:crypto";
 import { Readable } from "node:stream";
 import { initialiseDatabase, isConfiguredAdminEmail, many, normaliseEmail, one, passwordHash, passwordMatches, run, withTransaction } from "./db.mjs";
+import { presentItem } from "./item-privacy.mjs";
 import { calculateMatch } from "./matching.mjs";
 import { ensureStorageBucket, imagePublicUrl, saveImage } from "./storage.mjs";
 import { projectDirectory } from "./runtime-paths.mjs";
@@ -341,10 +342,7 @@ async function api(request, response, url) {
   if (method === "GET" && itemIdMatch) {
     const item = await getItem(Number(itemIdMatch[1]));
     const user = await currentUser(request);
-    const result = itemForClient(item);
-    result.is_owner = Boolean(user && (user.id === item.user_id || user.role === "admin"));
-    result.can_claim = Boolean(user && user.id !== item.user_id && item.report_type === "found" && ["open", "matched", "claimed"].includes(item.status));
-    return json(response, 200, { item: result });
+    return json(response, 200, { item: presentItem(itemForClient(item), user) });
   }
 
   if (method === "POST" && path === "/api/items") {
