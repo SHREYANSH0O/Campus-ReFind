@@ -1,13 +1,19 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import { setDefaultResultOrder } from "node:dns";
 import pg from "pg";
 
 const { Pool } = pg;
+setDefaultResultOrder("ipv4first");
+
 const connectionString = String(process.env.DATABASE_URL || "").trim();
 if (!connectionString) {
   throw new Error("DATABASE_URL is required. Use your Supabase session pooler connection string.");
 }
 
-const sslDisabled = /sslmode=disable/i.test(connectionString) || String(process.env.PGSSLMODE || "").trim().toLowerCase() === "disable";
+const sslDisabled =
+  /sslmode=disable/i.test(connectionString) ||
+  String(process.env.PGSSLMODE || "").trim().toLowerCase() === "disable";
+
 export const pool = new Pool({
   connectionString,
   ssl: sslDisabled ? false : { rejectUnauthorized: false },
